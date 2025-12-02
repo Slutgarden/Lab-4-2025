@@ -1,23 +1,15 @@
 import functions.*;
+import functions.basic.*;
+import functions.meta.Composition;
+
 import java.io.*;
 
 public class Task9 {
 
     public static void main(String[] args) {
         try {
-            Function f = new Function() {
-                public double getLeftDomainBorder() {
-                    return 0;
-                }
+            Function f = new Composition(new Log(Math.E), new Exp());
 
-                public double getRightDomainBorder() {
-                    return 10;
-                }
-
-                public double getFunctionValue(double x) {
-                    return Math.log(Math.exp(x));
-                }
-            };
 
             System.out.println("функция ln(exp(x)) = x на [0, 10] с шагом 1\n");
             TabulatedFunction original = TabulatedFunctions.tabulate(f, 0, 10, 11);
@@ -48,7 +40,7 @@ public class Task9 {
             for (int i = 0; i < points.length; i++) {
                 points[i] = new FunctionPoint(original.getPointX(i), original.getPointY(i));
             }
-            TabulatedFunction externalFunction = new ArrayTabulatedFunction(points);
+            TabulatedFunction externalFunction = new ArrayTabulatedFunctionExternal(points);
 
             File extFile = new File("externalizable.bin");
 
